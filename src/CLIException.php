@@ -6,7 +6,7 @@ namespace AbstractCLI;
  * Class CLIException
  *
  * @author  Jan Oetjen <oetjenj@gmail.com>
- * @version 0.0.1
+ * @version 0.0.2
  */
 class CLIException extends \Exception
 {

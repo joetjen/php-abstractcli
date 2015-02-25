@@ -1,0 +1,29 @@
+{
+  "name": "abstractcli/abstractcli",
+  "description": "Abstract base class for command line parsing",
+  "version": "0.0.1",
+  "keywords": ["cli", "commandline"],
+  "type": "library",
+  "homepage": "http://github.com/joetjen/php-abstractcli",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jan Oetjen",
+      "email": "oetjenj@gmail.com"
+    }
+  ],
+  "support": {
+    "issues": "http://github.com/joetjen/php-abstractcli/issues"
+  },
+  "autoload": {
+    "psr-4": {
+      "AbstractCLI\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "AbstractCLI\\Tests\\": "tests/"
+    }
+  }
+}

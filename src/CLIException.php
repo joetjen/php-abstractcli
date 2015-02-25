@@ -1,12 +1,14 @@
 <?php
 
+namespace AbstractCLI;
+
 /**
  * Class CLIException
  *
  * @author  Jan Oetjen <oetjenj@gmail.com>
  * @version 0.0.1
  */
-class CLIException extends Exception
+class CLIException extends \Exception
 {
 
   /**

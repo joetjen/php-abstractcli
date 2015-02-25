@@ -1,0 +1,16 @@
+{
+  "folders":
+  [
+    {
+      "path": ".",
+      "folder_exclude_patterns": [
+        ".idea"
+      ],
+      "file_exclude_patterns": [
+        "*.iml",
+        "atlassian-ide-plugin.xml",
+        "*.sublime-*"
+      ]
+    }
+  ]
+}

@@ -30,7 +30,7 @@ abstract class AbstractCLI
   const TYPE__MANDATORY = 'mandatory';
 
   /**
-   * This opition or argument has an optional value parameter.
+   * This option or argument has an optional value parameter.
    */
   const TYPE__OPTIONAL = 'optional';
 
@@ -146,7 +146,7 @@ abstract class AbstractCLI
    *
    * @return mixed|null Returns the return value of {@link execute()}.
    *
-   * @throws CLIException All CLIExceptions thrown during execution are catched and displayed in a formatted manner.
+   * @throws CLIException All CLIExceptions thrown during execution are caught and displayed in a formatted manner.
    */
   public final static function run(array $args)
   {
@@ -224,7 +224,7 @@ abstract class AbstractCLI
    * Add an argument definition.
    *
    * The passed array must contain the following indexes:
-   *   name  The name of the argument for display in the summary and error messages. This should be all uppercased.
+   *   name  The name of the argument for display in the summary and error messages. This should be all be upper-case.
    *   type  The type of the argument. Possible values are {@link TYPE__MANDATORY} and {@link TYPE__OPTIONAL}.
    *
    * Additionally the following indexes can be used:
@@ -284,7 +284,7 @@ abstract class AbstractCLI
    * Options of type {@link TYPE__MANDATORY} or {@link TYPE__OPTIONAL} must have an index called 'name' defining the
    * name of the value.
    *
-   * Options of type {@link TYPE__FUNCTION} must have an index called 'call' defining the funtion to call as soon as
+   * Options of type {@link TYPE__FUNCTION} must have an index called 'call' defining the function to call as soon as
    * the option is parsed.
    *
    * @param array $params The definition of the new argument.

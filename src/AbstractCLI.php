@@ -14,7 +14,7 @@ namespace AbstractCLI;
  * {@link setSummary()} and the footer with {@link setFooter()}.
  *
  * @author  Jan Oetjen <oetjenj@gmail.com>
- * @version 0.0.1
+ * @version 0.0.2
  */
 abstract class AbstractCLI
 {

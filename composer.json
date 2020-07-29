@@ -1,7 +1,6 @@
 {
   "name": "joetjen/abstractcli",
   "description": "Abstract base class for command line parsing",
-  "version": "0.0.3",
   "keywords": ["cli", "commandline"],
   "type": "library",
   "homepage": "http://github.com/joetjen/php-abstractcli",
@@ -21,7 +20,7 @@
   },
   "autoload": {
     "psr-4": {
-      "": "src/"
+      "JOetjen\\AbstractCLI\\": "src/"
     }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "abstractcli/abstractcli",
+  "name": "joetjen/abstractcli",
   "description": "Abstract base class for command line parsing",
   "version": "0.0.2",
   "keywords": ["cli", "commandline"],
@@ -16,14 +16,12 @@
   "support": {
     "issues": "http://github.com/joetjen/php-abstractcli/issues"
   },
+  "require": {
+    "php": ">=5.3"
+  },
   "autoload": {
     "psr-4": {
-      "AbstractCLI\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "AbstractCLI\\Tests\\": "tests/"
+      "": "src/"
     }
   }
 }

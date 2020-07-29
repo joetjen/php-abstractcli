@@ -1,6 +1,6 @@
 <?php
 
-namespace AbstractCLI;
+namespace JOetjen\AbstractCLI;
 
 /**
  * Class AbstractCLI
@@ -65,14 +65,14 @@ abstract class AbstractCLI
    *
    * @var null|string
    */
-  private $command = null;
+  private $command;
 
   /**
    * A footer message for the help output. Set with {@link setFooter()}.
    *
    * @var null|string
    */
-  private $footer = null;
+  private $footer;
 
   /**
    * All added options get stored here with the data structure. Add options with {@link addOption()}.
@@ -93,7 +93,7 @@ abstract class AbstractCLI
    *
    * @var null|string
    */
-  private $summary = null;
+  private $summary;
 
   /**
    * The version of the program. If this is not set the commandline parser with output the last modification date
@@ -101,7 +101,7 @@ abstract class AbstractCLI
    *
    * @var null|string
    */
-  private $version = null;
+  private $version;
 
   /**
    * Create a new parser instance. This also automatically add the following commandline options:
@@ -141,14 +141,14 @@ abstract class AbstractCLI
    * Create an instance of the AbstractCLI child this function is called on, parse the arguments supplied and call
    * the instance's {@link execute()} method with an array of the parsed arguments.
    *
+   * All CLIExceptions thrown during execution are caught and displayed in a formatted manner.
+   *
    * @param array $args An array containing arguments and options from the commandline. The first entry in this array
    *                    must the name of the program.
    *
    * @return mixed|null Returns the return value of {@link execute()}.
-   *
-   * @throws CLIException All CLIExceptions thrown during execution are caught and displayed in a formatted manner.
    */
-  public final static function run(array $args)
+  final public static function run(array $args)
   {
     $cli = new static();
 
@@ -172,7 +172,7 @@ abstract class AbstractCLI
    *
    * @return mixed|null
    */
-  public final function getArgument($idx, $default = null)
+  final public function getArgument($idx, $default = null)
   {
     if (array_key_exists($idx, $this->parsed)) {
       return $this->parsed[ $idx ];
@@ -189,7 +189,7 @@ abstract class AbstractCLI
    *
    * @return mixed|null
    */
-  public final function getOption($name, $default = null)
+  final public function getOption($name, $default = null)
   {
     $option = $this->findOption(array('long' => $name));
 
@@ -215,7 +215,7 @@ abstract class AbstractCLI
    *
    * @return bool
    */
-  public final function is($name)
+  final public function is($name)
   {
     return $this->getOption($name, false) !== false;
   }
@@ -242,7 +242,7 @@ abstract class AbstractCLI
    *
    * @throws CLIException
    */
-  protected final function addArgument(array $params)
+  final protected function addArgument(array $params)
   {
     if ( ! array_key_exists('name', $params)) {
       throw new CLIException('Arguments must have a "name"!');
@@ -256,7 +256,7 @@ abstract class AbstractCLI
 
     $type = $params['type'];
 
-    if ( ! in_array($type, array(self::TYPE__OPTIONAL, self::TYPE__MANDATORY))) {
+    if ( ! in_array($type, array(self::TYPE__OPTIONAL, self::TYPE__MANDATORY), true)) {
       throw new CLIException('Type "%s" is not valid for argument "%s"!', $type, $name);
     }
 
@@ -293,7 +293,7 @@ abstract class AbstractCLI
    *
    * @throws CLIException
    */
-  protected final function addOption(array $params)
+  final protected function addOption(array $params)
   {
     if ( ! array_key_exists('short', $params) && ! array_key_exists('long', $params)) {
       throw new CLIException('An option must at least have a short or long name!');
@@ -307,11 +307,11 @@ abstract class AbstractCLI
 
     $type = $params['type'];
 
-    if ( ! in_array($type, self::$types)) {
+    if ( ! in_array($type, self::$types, true)) {
       throw new CLIException('"%s" is no valid option type for option "%s"!', $type, $name);
     }
 
-    if (in_array($type, array(self::TYPE__OPTIONAL, self::TYPE__MANDATORY)) && ! array_key_exists('name', $params)) {
+    if ( ! array_key_exists('name', $params) && in_array($type, array(self::TYPE__OPTIONAL, self::TYPE__MANDATORY), true)) {
       throw new CLIException('Option "%s", of type %s, must have a "name" attribute!', $name, $type);
     }
 
@@ -336,7 +336,7 @@ abstract class AbstractCLI
    *
    * @throws CLIException
    */
-  protected final function checkArgumentCount() {
+  final protected function checkArgumentCount() {
     $idx = 0;
 
     foreach($this->arguments as $argument) {
@@ -345,7 +345,7 @@ abstract class AbstractCLI
           throw new CLIException('"%s" is a required argument!', $argument['name']);
         }
 
-        $idx += 1;
+        ++$idx;
       }
     }
 
@@ -360,7 +360,7 @@ abstract class AbstractCLI
    * @throws CLIException  The execute method should throw an error or exit with an exit value other than zero if the
    *                       program could not run successfully.
    */
-  protected abstract function execute();
+  abstract protected function execute();
 
   /**
    * Format and print the footer if one was defined.
@@ -490,7 +490,7 @@ abstract class AbstractCLI
    *
    * @return AbstractCLI returns an instance of the CLI.
    */
-  protected final function setFooter($footer)
+  final protected function setFooter($footer)
   {
     $this->footer = $footer;
 
@@ -504,7 +504,7 @@ abstract class AbstractCLI
    *
    * @return AbstractCLI returns an instance of the CLI.
    */
-  protected final function setSummary($summary)
+  final protected function setSummary($summary)
   {
     $this->summary = $summary;
 
@@ -518,7 +518,7 @@ abstract class AbstractCLI
    *
    * @return AbstractCLI returns an instance of the CLI.
    */
-  protected final function setVersion($version)
+  final protected function setVersion($version)
   {
     $this->version = $version;
 
@@ -533,7 +533,7 @@ abstract class AbstractCLI
    *
    * @return array|bool Return the option of false if no matching option was found.
    */
-  private final function findOption(array $params)
+  private function findOption(array $params)
   {
     return array_reduce($this->options, function ($memo, $option) use ($params) {
       if ($memo !== false) {
@@ -566,7 +566,7 @@ abstract class AbstractCLI
    *
    * @return array The updated parsed array.
    */
-  private final function initParsed(array $parsed, array $option)
+  private function initParsed(array $parsed, array $option)
   {
     if ($option['type'] === self::TYPE__SWITCH) {
       return $this->setParsed($parsed, $option, false);
@@ -584,7 +584,7 @@ abstract class AbstractCLI
    *
    * @throws CLIException
    */
-  private final function parse(array $args)
+  private function parse(array $args)
   {
     $this->command = array_shift($args);
     $parsed = array_reduce($this->options, array($this, 'initParsed'), array());
@@ -623,7 +623,7 @@ abstract class AbstractCLI
    *
    * @throws CLIException
    */
-  private final function parseArguments($value, array $args, array $parsed)
+  private function parseArguments($value, array $args, array $parsed)
   {
     $idx = 0;
 
@@ -631,7 +631,7 @@ abstract class AbstractCLI
       if ($argument['type'] === self::TYPE__MANDATORY) {
         if ( ! array_key_exists($idx, $parsed)) {
           if (array_key_exists('check', $argument)) {
-            call_user_func(array($this, $argument['check']), $value);
+            $this->{$argument['check']}($value);
           }
 
           $parsed[ $idx ] = $value;
@@ -639,7 +639,7 @@ abstract class AbstractCLI
           return array($args, $parsed);
         }
 
-        $idx += 1;
+        ++$idx;
       }
     }
 
@@ -647,7 +647,7 @@ abstract class AbstractCLI
       if ($argument['type'] === self::TYPE__OPTIONAL) {
         if ( ! array_key_exists($idx, $parsed) ||  preg_match('/\.\.\.$/', $argument['name'])) {
           if (array_key_exists('check', $argument)) {
-            call_user_func(array($this, $argument['check']), $value);
+            $this->{$argument['check']}($value);
           }
 
           $parsed[ $idx ] = $value;
@@ -655,7 +655,7 @@ abstract class AbstractCLI
           return array($args, $parsed);
         }
 
-        $idx += 1;
+        ++$idx;
       }
     }
 
@@ -674,7 +674,7 @@ abstract class AbstractCLI
    *
    * @throws CLIException
    */
-  private final function parseLongOption($value, array $args, array $parsed)
+  private function parseLongOption($value, array $args, array $parsed)
   {
     $split = explode('=', $value, 2);
 
@@ -698,7 +698,7 @@ abstract class AbstractCLI
    *
    * @throws CLIException
    */
-  private final function parseOption($type, $name, array $args, array $parsed)
+  private function parseOption($type, $name, array $args, array $parsed)
   {
     if (array_key_exists(0, $parsed)) {
       throw new CLIException('Options must come before arguments!');
@@ -712,7 +712,7 @@ abstract class AbstractCLI
 
     switch ($option['type']) {
       case self::TYPE__FUNCTION:
-        call_user_func(array($this, $option['call']));
+        $this->{$option['call']}();
 
         exit(1);
 
@@ -725,7 +725,7 @@ abstract class AbstractCLI
         $value = count($args) > 1 ? array_shift($args) : true;
 
         if (array_key_exists('check', $option)) {
-          call_user_func(array($this, $option['check']), $value);
+          $this->{$option['check']}($value);
         }
 
         $parsed = $this->setParsed($parsed, $option, $value);
@@ -740,7 +740,7 @@ abstract class AbstractCLI
         $value = array_shift($args);
 
         if (array_key_exists('check', $option)) {
-          call_user_func(array($this, $option['check']), $value);
+          $this->{$option['check']}($value);
         }
 
         $parsed = $this->setParsed($parsed, $option, $value);
@@ -762,7 +762,7 @@ abstract class AbstractCLI
    *
    * @throws CLIException
    */
-  private final function parseShortOptions($value, array $args, array $parsed)
+  private function parseShortOptions($value, array $args, array $parsed)
   {
     $split = str_split($value);
 
@@ -783,7 +783,7 @@ abstract class AbstractCLI
    *
    * @return string The realigned text.
    */
-  private final function realignText($text, $padding = 0, $maxWidth = 80)
+  private function realignText($text, $padding = 0, $maxWidth = 80)
   {
     $realignedText = '';
 
@@ -821,7 +821,7 @@ abstract class AbstractCLI
    *
    * @return array The updated parsed array.
    */
-  private final function setParsed(array $parsed, array $option, $value)
+  private function setParsed(array $parsed, array $option, $value)
   {
     if (array_key_exists('long', $option)) {
       $parsed[ $option['long'] ] = $value;

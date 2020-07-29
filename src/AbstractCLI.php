@@ -13,8 +13,7 @@ namespace JOetjen\AbstractCLI;
  * to add those. Additionally you can set the program version with {@link setVersion()}, the summary with
  * {@link setSummary()} and the footer with {@link setFooter()}.
  *
- * @author  Jan Oetjen <oetjenj@gmail.com>
- * @version 0.0.3
+ * @author Jan Oetjen <oetjenj@gmail.com>
  */
 abstract class AbstractCLI
 {
